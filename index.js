@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function hey_edith(command) {
         const lowerCaseCommand = command.toLowerCase();
         
+        
         if (lowerCaseCommand.includes('play')) {
             const song = command.replace('play', '').trim();
             talk('Playing ' + song);
