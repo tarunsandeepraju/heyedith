@@ -142,10 +142,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
                         // Combine cleaned content with "Know More" link
                         const contentWithLink = `Here is the information I found on Wikipedia. ${cleanedContent}`;
-                        
-
-                        
-
                 
                         //knowmorediv.textContent("knowMoreLink")
                         knowmorediv.innerHTML = knowMoreLink;
