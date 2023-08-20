@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const startButton = document.getElementById('startButton');
     const outputDiv = document.getElementById('output');
     const responseDiv = document.getElementById('response'); 
+    const knowmorediv = document.getElementById("know");
+    
+    
     stopButton.style.display = 'none';
     const recognition = new webkitSpeechRecognition();
     stopButton.addEventListener('click',function(){
@@ -32,8 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     recognition.addEventListener('end', function() { 
         startButton.textContent = 'Start Listening';
+        
     });
-
+    
     startButton.addEventListener('click', function() {
         if (!isListening) {
             recognition.start();
@@ -117,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } 
         else if (lowerCaseCommand.includes("what") || lowerCaseCommand.includes("who") || lowerCaseCommand.includes("search") || lowerCaseCommand.includes("how")) {
             const wikipediaApiUrl = `https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srsearch=${encodeURIComponent(command)}`;
-    
+        
             $.ajax({
                 url: wikipediaApiUrl,
                 method: "GET",
@@ -127,14 +131,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (searchResults.length > 0) {
                         const result = searchResults[0]; // Change to the desired result index
                         const resultHtml = result.snippet;
+                        const pageId = result.pageid; // Get the page ID
+        
                         // Clean the content by removing <span> elements with class "searchmatch"
                         const cleanedContent = resultHtml.replace(/<\/?span[^>]*>/g, '');
-                        talk("Here is the information I found on Wikipedia. "+cleanedContent);
-    
-            
+        
+                        // Create a "Know More" link
+                        const knowMoreLink = `<a href="https://en.wikipedia.org/?curid=${pageId}" target="_blank">Know More</a>`;
                         
+    
+                        // Combine cleaned content with "Know More" link
+                        const contentWithLink = `Here is the information I found on Wikipedia. ${cleanedContent}`;
+                        
+
+                        
+
+                
+                        //knowmorediv.textContent("knowMoreLink")
+                        knowmorediv.innerHTML = knowMoreLink;
+        
+                        // Display the information
+                        talk(contentWithLink);
                     } else {
-                        talk("I'm sorry, I couldn't find relevant information.");
+                        talk("I'm sorry, I couldn't find relevant information");
                     }
                 },
                 error: function (error) {
@@ -142,6 +161,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+               
+        
     
     }
 });
